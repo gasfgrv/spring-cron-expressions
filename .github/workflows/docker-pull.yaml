@@ -18,15 +18,15 @@ jobs:
       - name: build do projeto
         run: mvn -B clean package -DskipTests --file pom.xml
       - name: docker build
-        run: docker build -t gustosilva/teste-modelmapper .
+        run: docker build -t gustosilva/spring-cron .
       - name: docker login
         env:
           DOCKER_USER: ${{secrets.DOCKER_USER}}
           DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
         run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN
       - name: docker tag
-        run: docker tag $(docker images --filter=reference='gustosilva/teste-modelmapper' --format "{{.ID}}") gustosilva/teste-modelmapper
+        run: docker tag $(docker images --filter=reference='gustosilva/spring-cron' --format "{{.ID}}") gustosilva/spring-cron
       - name: docker push
-        run: docker push gustosilva/teste-modelmapper
+        run: docker push gustosilva/spring-cron
       - name: docker logout
         run: docker logout
