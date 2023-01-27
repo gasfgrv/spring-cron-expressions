@@ -1,0 +1,32 @@
+name: Docker Image CI
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Definir JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+      - name: build do projeto
+        run: mvn -B clean package --file pom.xml
+      - name: docker build
+        run: docker build -t gustosilva/teste-modelmapper .
+      - name: docker login
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
+        run: docker login -u $DOCKER_USER -p $DOCKER_TOKEN
+      - name: docker tag
+        run: docker tag $(docker images --filter=reference='gustosilva/teste-modelmapper' --format "{{.ID}}") gustosilva/teste-modelmapper
+      - name: docker push
+        run: docker push gustosilva/teste-modelmapper
+      - name: docker logout
+        run: docker logout
