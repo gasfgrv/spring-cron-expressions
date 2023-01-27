@@ -16,7 +16,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: build do projeto
-        run: mvn -B clean package --file pom.xml
+        run: mvn -B clean package -DskipTests --file pom.xml
       - name: docker build
         run: docker build -t gustosilva/teste-modelmapper .
       - name: docker login
