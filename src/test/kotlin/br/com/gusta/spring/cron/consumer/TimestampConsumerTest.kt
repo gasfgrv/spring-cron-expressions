@@ -76,7 +76,7 @@ class TimestampConsumerTest {
 
         timestampConsumer.consumeTimestamp(mensagem.headers, mensagem.payload)
 
-        assertThat(output.out).contains("Topic: ${topic}")
+        assertThat(output.out).contains("Topic: $topic")
         assertThat(output.out).contains(mockNow.toString())
     }
 
